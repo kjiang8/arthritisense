@@ -28,31 +28,46 @@
         // SOMEONE (i.e. maybe not even you) adds to the database
         toDoDB.on('value', showItems);
         
-        function showItems(snapshot){
+    function showItems(snapshot){
             //gets data in database as a list
             var data = snapshot.val();
             //loops over each identifier in database
             for (var identifier in data) {
-                console.log("ID: " + identifier); 
-                console.log("Data: " + data[identifier].task + ", " + data[identifier].reps);
+                console.log("ID: " + identifier);
+                console.log("Data: " + data[identifier].name + ", " + data[identifier].task + ", " + data[identifier].reps);
             }
-        }       
-        
+        }    
+     
         function addItem(){
             // Need the newtask id
             // Find the tag whose id is newtask
+            var name = $("#name").val();
             var task = $("#newtask").val();
-            var reps = $('#numreps').val()
-            var tasks = {"reps":reps, "task": task}
-            alert(task + ", " + reps);
+            var reps = $('#numreps').val();
+            var tasks = {"name": name, "reps": reps, "task": task};
+            alert(name + ", " + task + ", " + reps);
             toDoDB.push(tasks);
         }
-        
+
         function removeItem() {
             alert("Remove function got called!");
             var idToRemove = $("#oldid").val();
             toDoDB.child(idToRemove).remove();
         }
+
+        var user = firebase.auth().currentUser;
+        var name, email, photoUrl, uid;
+        console.log('user!');
+        console.log(user);
+        if (user != null) {
+            console.log('user = true');
+          name = user.displayName;
+          email = user.email;
+          photoUrl = user.photoURL;
+          uid = user.uid;  
+          console.log(name, email, uid);
+        }
+        
         
     </script>
 </head>
@@ -65,9 +80,10 @@
         </div><!-- end of header -->
 
         <div role="main" class="ui-content">
-            
+            <p>Welcome :)</p>
             <br>
             
+            <input type="text" data-clear-btn="true" id="name" placeholder="Type Patient's Name Here"/>
             <select name="tasks" id="newtask">
                 <option value="op0"> Please Select an Exercise </option>
                 <option value="op1"> One </option>

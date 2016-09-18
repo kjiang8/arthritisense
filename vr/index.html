@@ -75,6 +75,19 @@
             var idToRemove = $("#oldid").val();
             toDoDB.child(idToRemove).remove();
         }
+
+        var user = firebase.auth().currentUser;
+        var name, email, photoUrl, uid;
+        console.log('user!');
+        console.log(user);
+        if (user != null) {
+            console.log('user = true');
+          name = user.displayName;
+          email = user.email;
+          photoUrl = user.photoURL;
+          uid = user.uid;  
+          console.log(name, email, uid);
+        }
         
     </script>
 </head>
