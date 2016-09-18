@@ -99,8 +99,9 @@
         }
 
        function addTable(data) {
+            $("#table").empty();
             var myTableDiv = document.getElementById("table");
-            
+
             var table = document.createElement('TABLE');
             table.setAttribute("class", "table table-hover");
             var tableBody = document.createElement('TBODY');
