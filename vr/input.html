@@ -3,6 +3,16 @@
 <head>
     <title>Arthrisense</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <script src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
     <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
@@ -26,7 +36,9 @@
         background-color:lightgray;
     }
 
-
+    .table-hover tbody tr:hover td, .table-hover tbody tr:hover th{
+        background-color: palegreen;
+    }
 
 
 </style>
@@ -88,9 +100,9 @@
 
        function addTable(data) {
             var myTableDiv = document.getElementById("table");
+            
             var table = document.createElement('TABLE');
-            table.setAttribute("id", "table");
-            table.setAttribute("class", "table table-hover table-mc-light-blue");
+            table.setAttribute("class", "table table-hover");
             var tableBody = document.createElement('TBODY');
 
             // heading is tasks
@@ -203,7 +215,7 @@
             <button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-plus" id="removeid" onclick="removeItem()">Remove Id</button>
 
             <div id="demo">
-            <div id="table" class="table-responsive-vertical shadow-z-1" align="center"></div></div>
+            <div id="table" class="container" align="center"></div></div>
 
             <br>
             <br>
