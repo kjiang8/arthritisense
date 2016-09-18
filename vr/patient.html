@@ -95,24 +95,7 @@
 			});
         }
 
-    //var ProgressBar = require('progressbar.js')
-	var bar = new ProgressBar.Circle('#container', {
-	  strokeWidth: 6,
-	  easing: 'easeInOut',
-	  duration: 1400,
-	  color: '#FFEA82',
-	  trailColor: '#eee',
-	  trailWidth: 1,
-	  svgStyle: null,
-	  from: {color: '#99cdee'},
-	  to: {color: '#001178'},
-	  step: (state, bar) => {
-	      bar.path.setAttribute('stroke', state.color);
-	  }
-	});
 
-	bar.setText("3/10");
-	bar.animate(.7);  // Number from 0.0 to 1.0
 
         
     </script>
@@ -132,13 +115,14 @@
     <div data-role="page">
 
         <div data-role="header">
-            <h1>VR Arthritis Database</h1>
+            <h1>Arthritisense Patient Home</h1>
         </div><!-- end of header -->
-
+<!--
 <input type='button' id="usertype" onclick="scrape()" value='Click Me!'></input>
-<div id="inserthere"></div>
+<div id="inserthere"></div>-->
 
 <div id="container"></div>
+
 
 <div class="progress" id="progress"></div>
 
@@ -147,15 +131,61 @@
 
         <script>
 
-window.onload = function onLoad() {
-    var circle = new ProgressBar.Circle('#progress', {
-        color: '#FCB03C',
-        duration: 3000,
-        easing: 'easeInOut'
-    });
+    //var ProgressBar = require('progressbar.js')
+/*	var bar = new ProgressBar.Circle('#container', {
+	  strokeWidth: 6,
+	  easing: 'easeInOut',
+	  duration: 1400,
+	  color: '#FFEA82',
+	  trailColor: '#eee',
+	  trailWidth: 1,
+	  svgStyle: null,
+	  from: {color: '#99cdee'},
+	  to: {color: '#001178'},
+	  step: (state, bar) => {
+	      bar.path.setAttribute('stroke', state.color);
+	  }
+	});
 
-    circle.animate(1);
-};
+	bar.setText("3/10");
+	bar.animate(.7);  // Number from 0.0 to 1.0
+*/
+window.onload = function onLoad() {
+ 
+
+var bar = new ProgressBar.Circle(container, {
+  color: '#aaa',
+  // This has to be the same size as the maximum width to
+  // prevent clipping
+  strokeWidth: 4,
+  trailWidth: 1,
+  easing: 'easeInOut',
+  duration: 1400,
+  text: {
+    autoStyleContainer: false
+  },
+  from: { color: '#99cdee', width: 1 },
+  to: { color: '#001178', width: 4 },
+  // Set default step function for all animate calls
+  step: function(state, circle) {
+    circle.path.setAttribute('stroke', state.color);
+    circle.path.setAttribute('stroke-width', state.width);
+
+    circle.setText("3/10");
+
+  }
+});
+
+//bar.setText("3/10");
+bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+bar.text.style.fontSize = '2rem';
+bar.animate(1.0);  // Number from 0.0 to 1.0
+
+}
+	
+
+
+
 
         </script>
             

@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
-    <title>My Todo List</title>
+    <title>Arthrisense</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
@@ -89,6 +89,8 @@
        function addTable(data) {
             var myTableDiv = document.getElementById("table");
             var table = document.createElement('TABLE');
+            table.setAttribute("id", "table");
+            table.setAttribute("class", "table table-hover table-mc-light-blue");
             var tableBody = document.createElement('TBODY');
 
             // heading is tasks
@@ -173,7 +175,7 @@
     <div data-role="page">
 
         <div data-role="header">
-            <h1>VR Arthritis Database</h1>
+            <h1>Arthritisense Doctor Home</h1>
         </div><!-- end of header -->
 
         <div role="main" class="ui-content">
@@ -200,7 +202,8 @@
             <input type="text" data-clear-btn="true" id="oldid" placeholder="What id would you like to remove?" />
             <button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-plus" id="removeid" onclick="removeItem()">Remove Id</button>
 
-            <div id="table" class="responstable"></div>
+            <div id="demo">
+            <div id="table" class="table-responsive-vertical shadow-z-1" align="center"></div></div>
 
             <br>
             <br>
