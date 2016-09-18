@@ -1,0 +1,95 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>My Todo List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+    
+<script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAFDjo9FsEd-GWuyNpnzH9E9fgOAu2bZEE",
+    authDomain: "vr-arthritis-5ddd7.firebaseapp.com",
+    databaseURL: "https://vr-arthritis-5ddd7.firebaseio.com",
+    storageBucket: "",
+    messagingSenderId: "136502015869"
+  };
+  firebase.initializeApp(config);
+</script>
+
+    <script>
+        // This creates the connection to the database
+        var toDoDB = new Firebase('https://vr-arthritis-5ddd7.firebaseio.com/');
+        // This tells your web browser to respond when
+        // SOMEONE (i.e. maybe not even you) adds to the database
+        toDoDB.on('value', showItems);
+        
+        function showItems(snapshot){
+            //gets data in database as a list
+            var data = snapshot.val();
+            //loops over each identifier in database
+            for (var identifier in data) {
+                console.log("ID: " + identifier); 
+                console.log("Data: " + data[identifier].task + ", " + data[identifier].reps);
+            }
+        }       
+        
+        function addItem(){
+            // Need the newtask id
+            // Find the tag whose id is newtask
+            var task = $("#newtask").val();
+            var reps = $('#numreps').val()
+            var tasks = {"reps":reps, "task": task}
+            alert(task + ", " + reps);
+            toDoDB.push(tasks);
+        }
+        
+        function removeItem() {
+            alert("Remove function got called!");
+            var idToRemove = $("#oldid").val();
+            toDoDB.child(idToRemove).remove();
+        }
+        
+    </script>
+</head>
+
+<body>
+    <div data-role="page">
+
+        <div data-role="header">
+            <h1>VR Arthritis Database</h1>
+        </div><!-- end of header -->
+
+        <div role="main" class="ui-content">
+            
+            <br>
+            
+            <select name="tasks" id="newtask">
+                <option value="op0"> Please Select an Exercise </option>
+                <option value="op1"> One </option>
+                <option value="op2"> Two </option>
+                <option value="op3"> Three </option>
+                <option value="op4"> Four </option>
+                <option value="op5"> Five </option>
+            </select>
+          
+            
+            <input type="number" data-clear-btn="true" id="numreps" placeholder="Number of Reps" />
+            <button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-plus" id="addtask" onclick="addItem()">Add Task</button>
+            
+            <br>
+            
+            <!-- This is the button that lets the user remove an item, but you can only remove an item based on it's ID -->
+            <input type="text" data-clear-btn="true" id="oldid" placeholder="What id would you like to remove?" />
+            <button class="ui-btn ui-shadow ui-corner-all ui-btn-icon-left ui-icon-plus" id="removeid" onclick="removeItem()">Remove Id</button>
+
+        </div><!-- end of main -->
+
+    </div><!-- end of page -->
+</body>
+</html>
+
