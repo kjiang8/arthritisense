@@ -2,7 +2,9 @@
 <html>
 <head>
     <title>My Todo List</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
@@ -25,7 +27,18 @@
 
 
 
+        <style>
+            .progress {
+                height: 300px;
+            }
+            .progress > svg {
+                height: 50%;
+                display: block;
+            }
+        </style>
+
     <script>
+
         // This creates the connection to the database
         var toDoDB = new Firebase('https://vr-arthritis-5ddd7.firebaseio.com/');
         // This tells your web browser to respond when
@@ -83,7 +96,7 @@
         }
 
     //var ProgressBar = require('progressbar.js')
-	var bar = new ProgressBar.Circle(container, {
+	var bar = new ProgressBar.Circle('#container', {
 	  strokeWidth: 6,
 	  easing: 'easeInOut',
 	  duration: 1400,
@@ -126,6 +139,25 @@
 <div id="inserthere"></div>
 
 <div id="container"></div>
+
+<div class="progress" id="progress"></div>
+
+        <!-- These are probably out dated so you might want to use newest versions -->
+        <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.5.6/dist/progressbar.js"></script>
+
+        <script>
+
+window.onload = function onLoad() {
+    var circle = new ProgressBar.Circle('#progress', {
+        color: '#FCB03C',
+        duration: 3000,
+        easing: 'easeInOut'
+    });
+
+    circle.animate(1);
+};
+
+        </script>
             
         </div><!-- end of main -->
 
