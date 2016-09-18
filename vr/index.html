@@ -9,6 +9,8 @@
     <script src="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
     
 <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script>
   // Initialize Firebase
   var config = {
@@ -24,6 +26,9 @@
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
     <script type="text/javascript">
       // FirebaseUI config.
+      
+      var userType = "";
+
       var uiConfig = {
         'signInSuccessUrl': 'input.html',
         'signInOptions': [
@@ -38,48 +43,69 @@
         //'tosUrl': '<your-tos-url>',
       };
 
+      if (userType=="patient"){
+        uiConfig['signInSuccessUrl'] = 'patient.html';
+        control.log('pats')};
+
       // Initialize the FirebaseUI Widget using Firebase.
       var ui = new firebaseui.auth.AuthUI(firebase.auth());
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', uiConfig);
-    </script>
-    <script>
+    
+
         // This creates the connection to the database
-        var toDoDB = new Firebase('https://vr-arthritis-5ddd7.firebaseio.com/');
-        // This tells your web browser to respond when
-        // SOMEONE (i.e. maybe not even you) adds to the database
-        toDoDB.on('value', showItems);
-        
-        function showItems(snapshot){
-            //gets data in database as a list
-            var data = snapshot.val();
-            //loops over each identifier in database
-            for (var identifier in data) {
-                console.log("ID: " + identifier); 
-                console.log("Data: " + data[identifier].task + ", " + data[identifier].reps);
-            }
-        }       
-        
-        function addItem(){
-            // Need the newtask id
-            // Find the tag whose id is newtask
-            var task = $("#newtask").val();
-            var reps = $('#numreps').val()
-            var tasks = {"reps":reps, "task": task}
-            alert(task + ", " + reps);
-            toDoDB.push(tasks);
+      var toDoDB = new Firebase('https://vr-arthritis-5ddd7.firebaseio.com/');
+      var usersRef = toDoDB.child("users");
+      // This tells your web browser to respond when
+      // SOMEONE (i.e. maybe not even you) adds to the database
+      toDoDB.on('value', showItems);
+     
+      function showItems(snapshot){
+          //gets data in database as a list
+          var data = snapshot.val();
+          //loops over each identifier in database
+          for (var identifier in data) {
+              console.log("Name: ", identifier);
+              for (var index in data[identifier]) {
+                  console.log(data[identifier][index]["task"], " for ", data[identifier][index]["reps"], " reps");
+              }
+          }
+      }        
+
+  function addItem(){
+          var name = $("#name").val();
+          // Need the newtask id
+          // Find the tag whose id is newtask
+          var name = $("#name").val();
+          var task = $("#newtask").val();
+          var reps = $('#numreps').val();
+
+          var tasks = {"reps": reps, "task": task};
+          alert(name, task, reps);
+          toDoDB.child(name).push(tasks);
+      }
+ 
+
+        function getUserType(objButton){
+          console.log('something was presssed');
+          userType = objButton.value;
+          console.log(userType);
+          $('#hiddenthing').fadeIn();
+          $("#goaway").fadeOut();
+
         }
         
-        function removeItem() {
-            alert("Remove function got called!");
-            var idToRemove = $("#oldid").val();
-            toDoDB.child(idToRemove).remove();
-        }
+  function removeItem() {
+          alert("Remove function got called!");
+          var idToRemove = $("#oldid").val();
+          toDoDB.child(idToRemove).remove();
+      }
 
         var user = firebase.auth().currentUser;
         var name, email, photoUrl, uid;
         console.log('user!');
-        console.log(user);
+        //console.log(user);
+        console.log('username: ',name);
         if (user != null) {
             console.log('user = true');
           name = user.displayName;
@@ -87,7 +113,16 @@
           photoUrl = user.photoURL;
           uid = user.uid;  
           console.log(name, email, uid);
+          //ref.unauth();
         }
+
+
+
+        var ref = new Firebase("https://vr-arthritis-5ddd7.firebaseio.com");
+var authData = ref.getAuth();
+if (authData) {
+  console.log("Authenticated user with uid:", authData.uid);
+}
         
     </script>
 </head>
@@ -99,8 +134,19 @@
             <h1>VR Arthritis Database</h1>
         </div><!-- end of header -->
 
+        <p>Welcome to the VR Arthritis Therapy Tool :)</p>
+        <p>Are you a patient or doctor?</p>
+
+<div id="goaway">
+<input type='button' id="usertype" onclick="getUserType(this)" value='patient'></input>
+<input type='button' id="usertype" onclick="getUserType(this)" value='doctor'></input>
+</div>
+
+
         <div role="main" class="ui-content">
-            <div id="firebaseui-auth-container"></div>
+            <div id="hiddenthing" style="display:none;">
+            <div id="firebaseui-auth-container" ></div>
+          </div>
             <br>
             
             

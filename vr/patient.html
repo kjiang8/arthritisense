@@ -1,0 +1,135 @@
+<!DOCTYPE html> 
+<html>
+<head>
+    <title>My Todo List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src='https://cdn.firebase.com/js/client/1.0.15/firebase.js'></script>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.5.6/dist/progressbar.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+    
+<script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAFDjo9FsEd-GWuyNpnzH9E9fgOAu2bZEE",
+    authDomain: "vr-arthritis-5ddd7.firebaseapp.com",
+    databaseURL: "https://vr-arthritis-5ddd7.firebaseio.com",
+    storageBucket: "",
+    messagingSenderId: "136502015869"
+  };
+  firebase.initializeApp(config);
+</script>
+
+
+
+    <script>
+        // This creates the connection to the database
+        var toDoDB = new Firebase('https://vr-arthritis-5ddd7.firebaseio.com/');
+        // This tells your web browser to respond when
+        // SOMEONE (i.e. maybe not even you) adds to the database
+        toDoDB.on('value', showItems);
+        
+        function showItems(snapshot){
+            //gets data in database as a list
+            var data = snapshot.val();
+            //loops over each identifier in database
+            for (var identifier in data) {
+                console.log("ID: " + identifier); 
+                console.log("Data: " + data[identifier].task + ", " + data[identifier].reps);
+            }
+        }       
+
+        function addItem(){
+            // Need the newtask id
+            // Find the tag whose id is newtask
+            var task = $("#newtask").val();
+            var reps = $('#numreps').val()
+            var tasks = {"reps":reps, "task": task}
+            alert(task + ", " + reps);
+            toDoDB.push(tasks);
+        }
+
+        var userType = "";
+
+        function getUserType(objButton){
+          //console.log('something was presssed');
+          userType = objButton.value;
+          console.log(userType);
+          $('#hiddenthing').fadeIn();
+          $("#usertype").hide();
+
+        }
+        
+        function removeItem() {
+            alert("Remove function got called!");
+            var idToRemove = $("#oldid").val();
+            toDoDB.child(idToRemove).remove();
+        }
+
+        function scrape(){
+        	var ref = new Firebase("https://vr-arthritis-5ddd7.firebaseio.com/");
+			// Attach an asynchronous callback to read the data at our posts reference
+			ref.on("value", function(snapshot) {
+			  console.log(snapshot.val());
+			  $('#inserthere').append(JSON.stringify(snapshot.val()));
+			  //$('#inserthere').append("newthings");
+			  console.log('inserted');
+			}, function (errorObject) {
+			  console.log("The read failed: " + errorObject.code);
+			});
+        }
+
+    //var ProgressBar = require('progressbar.js')
+	var bar = new ProgressBar.Circle(container, {
+	  strokeWidth: 6,
+	  easing: 'easeInOut',
+	  duration: 1400,
+	  color: '#FFEA82',
+	  trailColor: '#eee',
+	  trailWidth: 1,
+	  svgStyle: null,
+	  from: {color: '#99cdee'},
+	  to: {color: '#001178'},
+	  step: (state, bar) => {
+	      bar.path.setAttribute('stroke', state.color);
+	  }
+	});
+
+	bar.setText("3/10");
+	bar.animate(.7);  // Number from 0.0 to 1.0
+
+        
+    </script>
+
+<style>
+#container {
+  margin: 20px;
+  width: 200px;
+  height: 200px;
+  position: relative;
+}
+</style>
+
+</head>
+
+<body>
+    <div data-role="page">
+
+        <div data-role="header">
+            <h1>VR Arthritis Database</h1>
+        </div><!-- end of header -->
+
+<input type='button' id="usertype" onclick="scrape()" value='Click Me!'></input>
+<div id="inserthere"></div>
+
+<div id="container"></div>
+            
+        </div><!-- end of main -->
+
+    </div><!-- end of page -->
+</body>
+</html>
+
